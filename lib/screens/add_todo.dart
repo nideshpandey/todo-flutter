@@ -3,7 +3,9 @@ import 'package:todo_flutter/todo_logic.dart';
 import 'package:provider/provider.dart';
 
 class AddTodo extends StatelessWidget {
-  AddTodo({Key? key}) : super(key: key);
+  AddTodo({Key? key, this.title, this.index}) : super(key: key);
+  final String? title;
+  final int? index;
 
   final todoController = TextEditingController();
 
@@ -11,7 +13,7 @@ class AddTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Todo'),
+        title: Text(title!),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -31,12 +33,19 @@ class AddTodo extends StatelessWidget {
           const Padding(padding: EdgeInsets.all(10)),
           TextButton(
               onPressed: () {
-                (context).read<TodoLogic>().addTodo(todoController.text);
+                if (index != null) {
+                  (context)
+                      .read<TodoLogic>()
+                      .updateTodo(index!, todoController.text);
+                } else {
+                  (context).read<TodoLogic>().addTodo(todoController.text);
+                }
+
                 Navigator.pop(context);
               },
-              child: const Text(
-                'Add Todo',
-                style: TextStyle(fontSize: 20),
+              child: Text(
+                title == 'Add Todo' ? 'Add Todo' : 'Edit Todo',
+                style: const TextStyle(fontSize: 20),
               ))
         ],
       ),

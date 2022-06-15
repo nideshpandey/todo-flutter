@@ -22,7 +22,11 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddTodo()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddTodo(
+                        title: 'Add Todo',
+                      )));
         },
       ),
       appBar: AppBar(
@@ -34,12 +38,21 @@ class _HomePageState extends State<HomePage> {
                   itemCount: todos.length,
                   itemBuilder: (context, index) => Card(
                         child: ListTile(
+                          onLongPress: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddTodo(
+                                        title: 'Edit Todo', index: index
+                                      ))),
                           leading: Text(todos[index]),
                           trailing: IconButton(
                               onPressed: () {
                                 (context).read<TodoLogic>().removeTodo(index);
                               },
-                              icon: const Icon(Icons.delete, color: Colors.red,)),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              )),
                         ),
                       ))
               : const Center(

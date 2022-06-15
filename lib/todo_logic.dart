@@ -8,8 +8,13 @@ class TodoLogic with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeTodo(int index){
+  void removeTodo(int index) {
     todos.removeAt(index);
+    notifyListeners();
+  }
+
+  void updateTodo(int index, String updated) {
+    todos[index] = updated;
     notifyListeners();
   }
 
