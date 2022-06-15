@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:todo_flutter/models/model.dart';
 import 'package:todo_flutter/todo_logic.dart';
 
 class AddTodo extends StatelessWidget {
-
   final List<Todo>? todo;
 
-  AddTodo({
-    Key? key,
-    this.topTitle,
-    this.index,
-    this.todo
-  }) : super(key: key);
+  AddTodo({Key? key, this.topTitle, this.index, this.todo}) : super(key: key);
   final String? topTitle;
   final int? index;
-
 
   final todoController = TextEditingController();
 
@@ -47,9 +39,11 @@ class AddTodo extends StatelessWidget {
                 if (index != null) {
                   (context)
                       .read<TodoLogic>()
-                      .updateTodo(index!, todoController.text);
+                      .updateTodo(index!, Todo(title: todoController.text));
                 } else {
-                  (context).read<TodoLogic>().addTodo(Todo(title: todoController.text));
+                  (context)
+                      .read<TodoLogic>()
+                      .addTodo(Todo(title: todoController.text));
                 }
 
                 Navigator.pop(context);

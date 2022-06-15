@@ -3,7 +3,6 @@ import 'package:todo_flutter/models/model.dart';
 
 class TodoLogic with ChangeNotifier {
   List<Todo> todos = [];
-  bool completed = false;
 
   void addTodo(Todo data) {
     todos.add(data);
@@ -15,13 +14,12 @@ class TodoLogic with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTodo(int index, String updated) {
-    //todos[index] = updated;
+  void updateTodo(int index, Todo updated) {
+    todos[index] = updated;
     notifyListeners();
   }
 
   void completedStatus(int index){
-    //completed = !completed;
     Todo todo = todos[index];
     todo.completed = !todo.completed;
     todos[index] = todo;

@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     List<Todo> todos = (context).watch<TodoLogic>().getTodos();
-    print(todos);
+    //print(todos);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -39,21 +39,49 @@ class _HomePageState extends State<HomePage> {
                   itemCount: todos.length,
                   itemBuilder: (context, index) => Card(
                         child: ListTile(
-                          onTap: () => (context).read<TodoLogic>().completedStatus(index),
+                          onTap: () => (context)
+                              .read<TodoLogic>()
+                              .completedStatus(index),
                           onLongPress: () => Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddTodo(
-                                        topTitle: 'Edit Todo', index: index
-                                      ))),
-                          leading: Text(todos[index].title,
-                          style: TextStyle(
-                            decoration: (context).watch<TodoLogic>().todos[index].completed ? TextDecoration.lineThrough : null
-
-                          ),),
+                                      topTitle: 'Edit Todo', index: index))),
+                          leading: Text(
+                            todos[index].title,
+                            style: TextStyle(
+                                decoration: (context)
+                                        .watch<TodoLogic>()
+                                        .todos[index]
+                                        .completed
+                                    ? TextDecoration.lineThrough
+                                    : null),
+                          ),
                           trailing: IconButton(
                               onPressed: () {
-                                (context).read<TodoLogic>().removeTodo(index);
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('Confirm Deletion'),
+                                    content: const Text(
+                                        'Are you sure you want to delete ?'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            (context)
+                                                .read<TodoLogic>()
+                                                .removeTodo(index);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Delete')),
+                                    ],
+                                  ),
+                                );
                               },
                               icon: const Icon(
                                 Icons.delete,
