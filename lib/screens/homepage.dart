@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_flutter/models/model.dart';
 import 'package:todo_flutter/screens/add_todo.dart';
 import 'package:todo_flutter/todo_logic.dart';
 
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List todos = (context).watch<TodoLogic>().getTodos();
+    List<Todo> todos = (context).watch<TodoLogic>().getTodos();
     print(todos);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(
                   builder: (context) => AddTodo(
-                        title: 'Add Todo',
+                        topTitle: 'Add Todo',
                       )));
         },
       ),
@@ -38,13 +39,18 @@ class _HomePageState extends State<HomePage> {
                   itemCount: todos.length,
                   itemBuilder: (context, index) => Card(
                         child: ListTile(
+                          onTap: () => (context).read<TodoLogic>().completedStatus(index),
                           onLongPress: () => Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddTodo(
-                                        title: 'Edit Todo', index: index
+                                        topTitle: 'Edit Todo', index: index
                                       ))),
-                          leading: Text(todos[index]),
+                          leading: Text(todos[index].title,
+                          style: TextStyle(
+                            decoration: (context).watch<TodoLogic>().todos[index].completed ? TextDecoration.lineThrough : null
+
+                          ),),
                           trailing: IconButton(
                               onPressed: () {
                                 (context).read<TodoLogic>().removeTodo(index);

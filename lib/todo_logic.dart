@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todo_flutter/models/model.dart';
 
 class TodoLogic with ChangeNotifier {
-  List<String> todos = [];
+  List<Todo> todos = [];
+  bool completed = false;
 
-  void addTodo(String data) {
+  void addTodo(Todo data) {
     todos.add(data);
     notifyListeners();
   }
@@ -14,11 +16,20 @@ class TodoLogic with ChangeNotifier {
   }
 
   void updateTodo(int index, String updated) {
-    todos[index] = updated;
+    //todos[index] = updated;
     notifyListeners();
   }
 
-  List getTodos() {
+  void completedStatus(int index){
+    //completed = !completed;
+    Todo todo = todos[index];
+    todo.completed = !todo.completed;
+    todos[index] = todo;
+    notifyListeners();
+
+  }
+
+  List<Todo> getTodos() {
     return todos;
   }
 }
